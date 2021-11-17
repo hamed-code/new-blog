@@ -10,4 +10,7 @@
     <section class="sidebar-link">
         <a href="">post</a>
     </section>
+    <section class="sidebar-link">
+        <a href="<?= url('admin/menus') ?>">menus</a>
+    </section>
 </section>
