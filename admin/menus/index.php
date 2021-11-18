@@ -33,7 +33,7 @@ require_once 'delete.php';
 
                     <section class="mb-2 d-flex justify-content-between align-items-center">
                         <h2 class="h4">Menus</h2>
-                        <a href="<?= url('admin/category/create.php') ?>" class="btn btn-sm btn-success">Create</a>
+                        <a href="<?= url('admin/menus/create.php') ?>" class="btn btn-sm btn-success">Create</a>
                     </section>
 
                     <section class="table-responsive">
@@ -42,9 +42,9 @@ require_once 'delete.php';
                                 <tr>
                                     <th>#</th>
                                     <th>title</th>
-                                    <th>setting</th>
                                     <th>sort</th>
                                     <th>status</th>
+                                    <th>setting</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,11 +61,6 @@ require_once 'delete.php';
                                     <tr>
                                         <td><?= $menu->id ?></td> 
                                         <td><?= $menu->title ?></td>
-                                        <td><a href="<?= url('admin/menus/edit.php?id=') . $menu->id ?>" class="btn btn-info btn-sm">Edit</a>
-
-                                            <input type="hidden" class="delete_id_value" value="<?= $menu->id ?>">
-                                            <a href="javascript:void(0)" class="delete_btn_ajax btn btn-danger btn-sm">Confirm Delete</a>
-                                        </td>
                                         <td><?= $menu->sort ?></td>
                                         <td>
                                             <?php if($menu->status == 1) { ?>
@@ -73,6 +68,11 @@ require_once 'delete.php';
                                             <?php }else{ ?>
                                             <button class="btn btn-danger">غیر فعال</button>
                                             <?php } ?>
+                                        </td>
+                                        <td><a href="<?= url('admin/menus/edit.php?menu_id=') . $menu->id ?>" class="btn btn-info btn-sm">Edit</a>
+
+                                            <input type="hidden" class="delete_id_value" value="<?= $menu->id ?>">
+                                            <a href="javascript:void(0)" class="delete_btn_ajax btn btn-danger btn-sm">Confirm Delete</a>
                                         </td>
                                     </tr>
 

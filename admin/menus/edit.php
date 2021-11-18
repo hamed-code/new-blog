@@ -3,29 +3,28 @@
 require_once '../../functions/helpers.php';
 require_once '../../functions/pdo_connection.php';
 
-// $success = null;
+$success = null;
+if(!isset($_GET['menu_id'])){
+    redirect('admin/menus');
+}
 
-// if (!isset($_GET['cat_id'])) {
-//     redirect('admin/category');
-// }
+$query = "SELECT * FROM menu WHERE id = ?";
+$statement = $conn->prepare($query);
+$statement->execute([$_GET['menu_id']]);
+$menu = $statement->fetch();
 
-// $query = "SELECT * FROM categories WHERE id = ?";
-// $statement = $conn->prepare($query);
-// $statement->execute([$_GET['cat_id']]);
-// $category = $statement->fetch();
+if($menu == false){
+    redirect('admin/menus');
+} 
 
-// if ($category == false) {
-//     redirect('admin/category');
-// }
+if (isset($_POST['submit'])){
+    $query = "UPDATE menu SET title = ? , sort = ? , status = ? , updated_at = now() WHERE id = ?";
+    $statement = $conn->prepare($query);
+    $statement->execute([$_POST['title'] , $_POST['sort'] , $_POST['radio'] , $_GET['menu_id']]);
+    redirect('admin/menus');
+    $success = true;
+}
 
-// if (isset($_POST['name']) && $_POST['name'] != "") {
-
-//     $query = "UPDATE categories SET name = ?, updated_at = now() WHERE id = ?";
-//     $statement = $conn->prepare($query);
-//     $statement->execute([$_POST['name'], $_GET['cat_id']]);
-//     $success = true;
-//     redirect('admin/category');
-// }
 
 ?>
 <!DOCTYPE html>
@@ -54,17 +53,24 @@ require_once '../../functions/pdo_connection.php';
                 <section class="col-md-10 pt-3">
 
 
-                    <form action="<?= url('admin/menus/edit.php?id=') . $menu->id ?>" method="post">
+                    <form action="<?= url('admin/menus/edit.php?menu_id=') . $menu->id ?>" method="post">
                         <section class="form-group">
                             <label for="name">title</label>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="name ..." value="<?= $category->name ?>">
+                            <input type="text" class="form-control" name="title" id="name" placeholder="name ..." value="<?= $menu->title ?>">
                             <label for="name">sort</label>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="name ..." value="<?= $category->name ?>">
+                            <input type="text" class="form-control" name="sort" id="name" placeholder="name ..." value="<?= $menu->sort ?>"><br>
                             <label for="name">status</label>
-                            
+                            <div>
+                            <input value="1" name="radio" type="radio" 
+                            <?php if($menu->status == 1) { ?> checked <?php } ?>>                    
+                            <label for="">فعال</label><br>
+                            <input value="0" name="radio" type="radio"                     
+                            <?php if($menu->status == 0) { ?> checked <?php } ?>>                      
+                            <label for="">غیر فعال</label>
+                            </div>
                         </section>
                         <section class="form-group">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button name="submit" type="submit" class="btn btn-primary">Update</button>
                         </section>
                     </form>
 
